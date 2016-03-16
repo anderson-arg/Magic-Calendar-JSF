@@ -15,7 +15,7 @@ public class PersistenceUtil {
 
     static {
         try {
-    		emf = Persistence.createEntityManagerFactory("turmas");
+    		emf = Persistence.createEntityManagerFactory("calendar");
     		emc = new ManagedEMContext(emf);
             logger.info("Fábrica de EntityManagers construída.");
         } catch (Throwable ex) {
