@@ -1,4 +1,4 @@
-package br.edu.ifpb.pweb.model;
+package br.edu.ifpb.pweb.calendar.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,28 +13,28 @@ import org.hibernate.type.CalendarType;
 @Entity
 public class Admin extends Pessoa {
 	@OneToMany(mappedBy="admin", cascade=CascadeType.ALL, orphanRemoval=true)
-	private List<CalendarHoliday> listHoliday;
+	private List<CalendarFixedHoliday> listHoliday;
 	
 	public Admin(){
 		super();
-		this.listHoliday = new ArrayList<CalendarHoliday>();
+		this.listHoliday = new ArrayList<CalendarFixedHoliday>();
 	}
 	
-	public void addHoliday(CalendarHoliday holiday){
+	public void addHoliday(CalendarFixedHoliday holiday){
 		holiday.setAdmin(this);
 		this.listHoliday.add(holiday);
 	}
 	
-	public void delHoliday(CalendarHoliday holiday){
+	public void delHoliday(CalendarFixedHoliday holiday){
 		this.listHoliday.remove(holiday);
 	}
 	
-	public List<CalendarHoliday> getAllListHoliday(){
+	public List<CalendarFixedHoliday> getAllListHoliday(){
 		return this.listHoliday;
 	}
 	
-	public CalendarHoliday getHoliday(int id, int type){
-		for(CalendarHoliday holiday : listHoliday){
+	public CalendarFixedHoliday getHoliday(int id, int type){
+		for(CalendarFixedHoliday holiday : listHoliday){
 			if(holiday.getId() == id /*&& holiday.getType() == type*/ ){
 				return holiday;
 			}
@@ -42,8 +42,8 @@ public class Admin extends Pessoa {
 		return null;
 	}
 	
-	public CalendarHoliday getHoliday(int id){
-		for(CalendarHoliday holiday : listHoliday){
+	public CalendarFixedHoliday getHoliday(int id){
+		for(CalendarFixedHoliday holiday : listHoliday){
 			if(holiday.getId() == id){
 				return holiday;
 			}
@@ -51,9 +51,9 @@ public class Admin extends Pessoa {
 		return null;
 	}
 	
-	public void setHoliday(CalendarHoliday ch){
+	public void setHoliday(CalendarFixedHoliday ch){
 		int index = 0;
-		for(CalendarHoliday holiday : listHoliday){
+		for(CalendarFixedHoliday holiday : listHoliday){
 			if(holiday.getId() == ch.getId()){
 				this.listHoliday.set(index, ch);
 			}
@@ -61,9 +61,9 @@ public class Admin extends Pessoa {
 		}
 	}
 	
-	public List<CalendarHoliday> getListFixedHoliday(){
-		List<CalendarHoliday> list = new ArrayList<CalendarHoliday>();
-		for(CalendarHoliday holiday : listHoliday){
+	public List<CalendarFixedHoliday> getListFixedHoliday(){
+		List<CalendarFixedHoliday> list = new ArrayList<CalendarFixedHoliday>();
+		for(CalendarFixedHoliday holiday : listHoliday){
 			/*if(holiday.getType() == CalendarType.CALENDAR_FIXED){
 				list.add(holiday);
 			}*/
@@ -71,8 +71,8 @@ public class Admin extends Pessoa {
 		return list;
 	}
 	
-	public void setListFixedHoliday(List<CalendarHoliday> list){
-		for(CalendarHoliday ch : list){
+	public void setListFixedHoliday(List<CalendarFixedHoliday> list){
+		for(CalendarFixedHoliday ch : list){
 			setHoliday(ch);
 		}
 	}

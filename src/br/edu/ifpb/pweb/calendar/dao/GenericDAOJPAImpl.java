@@ -1,4 +1,4 @@
-package br.edu.ifpb.pweb.turmas.dao;
+package br.edu.ifpb.pweb.calendar.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;

@@ -1,4 +1,4 @@
-package br.edu.ifpb.pweb.turmas.dao;
+package br.edu.ifpb.pweb.calendar.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

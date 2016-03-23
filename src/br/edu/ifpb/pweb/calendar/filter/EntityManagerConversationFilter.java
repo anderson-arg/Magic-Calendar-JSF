@@ -1,4 +1,4 @@
-package br.edu.ifpb.pweb.turmas.filter;
+package br.edu.ifpb.pweb.calendar.filter;
 
 import java.io.IOException;
 
@@ -17,8 +17,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.hibernate.StaleObjectStateException;
 
-import br.edu.ifpb.pweb.turmas.dao.ManagedEMContext;
-import br.edu.ifpb.pweb.turmas.dao.PersistenceUtil;
+import br.edu.ifpb.pweb.calendar.dao.ManagedEMContext;
+import br.edu.ifpb.pweb.calendar.dao.PersistenceUtil;
 
 @WebFilter(urlPatterns = {"*.jsf", "/faces/*"})
 public class EntityManagerConversationFilter implements Filter {

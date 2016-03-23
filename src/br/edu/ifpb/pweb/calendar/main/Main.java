@@ -1,4 +1,4 @@
-package br.edu.ifpb.pweb.turmas;
+package br.edu.ifpb.pweb.calendar.main;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -1,4 +1,4 @@
-package br.edu.ifpb.pweb.model;
+package br.edu.ifpb.pweb.calendar.model;
 
 import java.util.Date;
 
@@ -17,8 +17,6 @@ public abstract class Calendar {
 	private String text;
 	@Temporal(TemporalType.DATE)
 	private Date startDate;
-	@Temporal(TemporalType.DATE)
-	private Date endDate;
 	private String color;
 	
 	public Calendar(){}
@@ -45,14 +43,6 @@ public abstract class Calendar {
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
 	}
 
 	public String getColor() {

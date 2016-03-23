@@ -1,4 +1,4 @@
-package br.edu.ifpb.pweb.model;
+package br.edu.ifpb.pweb.calendar.model;
 
 import java.util.ArrayList;
 import java.util.List;

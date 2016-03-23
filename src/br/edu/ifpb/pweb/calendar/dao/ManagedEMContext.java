@@ -1,4 +1,4 @@
-package br.edu.ifpb.pweb.turmas.dao;
+package br.edu.ifpb.pweb.calendar.dao;
 
 import java.util.HashMap;
 import java.util.Map;

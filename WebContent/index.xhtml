@@ -8,9 +8,23 @@
       xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<link href="resources/css/bootstrap.css" rel="stylesheet" />
 <title>Insert title here</title>
 </head>
 <body>
-	oi!
+	#{magicCalendar.gerarCalendar()}
+	<h:form>
+		<h:commandLink value="Prev" actionListener="#{magicCalendar.dataAtual(-1)}"/>
+		<h:outputText value="#{magicCalendar.dataAtualConcatenada}"/>
+		<h:commandLink value="Next" actionListener="#{magicCalendar.dataAtual(1)}"/>
+		<h:dataTable var="dia" value="#{magicCalendar.diasCalendar}">
+			<h:column>
+				<h:outputText value="#{magicCalendar.diaSemana(dia.id)}: " />
+			</h:column>
+			<h:column>
+				#{dia.id}
+			</h:column>
+		</h:dataTable>
+	</h:form>
 </body>
 </html>

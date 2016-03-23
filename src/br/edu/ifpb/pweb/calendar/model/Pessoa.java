@@ -1,4 +1,4 @@
-package br.edu.ifpb.pweb.model;
+package br.edu.ifpb.pweb.calendar.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
