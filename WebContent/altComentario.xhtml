@@ -13,11 +13,11 @@
 <link href="resources/css/bootstrap.css" rel="stylesheet" />
 <link href="resources/css/style.css" rel="stylesheet" />
 
-<title>Página Inicial</title>
+<title>Página ADD/UPDATE Comentario</title>
 
 </head>
 <body>
-
+	#{magicCalendarBean.unloadFlash()}
 	<div id="topo">
 		<div id="msg"></div>
 		<div id="menu">
@@ -37,56 +37,14 @@
 		</div>
 	</div>
 
-	#{magicCalendarBean.gerarCalendar()}
-	<h:form>
-		<div id="dataAtual">
-			<h:commandLink value="Prev" actionListener="#{magicCalendarBean.addDataAtual(-1)}"/>
-			<b><h:outputText value="#{magicCalendarBean.dataAtualConcatenada}"/></b>
-			<h:commandLink value="Next" actionListener="#{magicCalendarBean.addDataAtual(1)}"/>
-		</div>
-		<h:dataTable var="dia" value="#{magicCalendarBean.diasCalendar}" styleClass="table table-striped">
-			<h:column>
-			<f:facet name="header">Dia da Semana</f:facet>
-				<h:outputText value="#{magicCalendarBean.diaSemana(dia.id)}" />
-			</h:column>
-			<h:column>
-			<f:facet name="header">Dia</f:facet>
-				#{dia.id}
-			</h:column>
-			<h:column>
-				<f:facet name="header">Feriado</f:facet>
-				Aqui vai ficar o feriado!
-			</h:column>
-			<h:column rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.USUARIO}">
-			<f:facet name="header">Anotações</f:facet>
-				<h:commandLink value="+" action="#{magicCalendarBean.setOpcAltComentario(magicCalendarBean.CREATE, dia, null)}"/><br/>
-				<h:dataTable var="comentario" value="#{dia.comentarios}">
-					<h:column>
-						<h:commandLink value="@ " action="#{magicCalendarBean.setOpcAltComentario(magicCalendarBean.UPDATE, dia, comentario)}"/>
-						<h:commandLink value="-" actionListener="#{magicCalendarBean.deletarComentario(dia, comentario)}"/>
-						#{comentario.text}
-					</h:column>
-				</h:dataTable>
-			</h:column>
-		</h:dataTable>
+	<h1>#{magicCalendarBean.tituloPagina}</h1>
+	<h:form id="formLogin">
+		<h:outputLabel value="Comentario: " for="comentario"/>
+		<h:inputText  id="comentario" value="#{magicCalendarBean.texto}" required="true"/>
+		<h:message style="color:red" for="comentario"/>
+		<br/>
+		<h:commandButton value="#{magicCalendarBean.valueBotao}" action="#{magicCalendarBean.alterarComentario}" />
 	</h:form>
-	
-	<div id="help">
-		<table>
-			<tr>
-				<td><div id="red"></div></td>
-				<td><b>Fixed</b></td>
-			</tr>
-			<tr>
-				<td><div id="green"></div></td>
-				<td><b>Movement</b></td>
-			</tr>
-			<tr>
-				<td><div id="blue"></div></td>
-				<td><b>Substitute</b></td>
-			</tr>
-		</table>
-	</div>
 	
 </body>
 </html>

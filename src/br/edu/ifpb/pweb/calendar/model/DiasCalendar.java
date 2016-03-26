@@ -32,4 +32,13 @@ public class DiasCalendar extends Calendar {
 		this.calendarios.remove(calendar);
 	}
 	
+	public List<CalendarComment> getComentarios(){
+		List<CalendarComment> cms = new ArrayList<CalendarComment>();
+		for (Calendar c : this.calendarios) {
+			if(c instanceof CalendarComment)
+				cms.add((CalendarComment)c);
+		}
+		return cms;
+	}
+	
 }

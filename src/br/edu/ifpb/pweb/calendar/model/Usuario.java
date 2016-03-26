@@ -1,11 +1,11 @@
 package br.edu.ifpb.pweb.calendar.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -13,7 +13,7 @@ public class Usuario extends Pessoa {
 	
 	private boolean status;
 	
-	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true)
+	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<CalendarComment> listComment;
 	
 	public Usuario(String nome, String senha){
@@ -39,10 +39,6 @@ public class Usuario extends Pessoa {
 	
 	public void delComment(CalendarComment comment){
 		this.listComment.remove(comment);
-	}
-	
-	public List<CalendarComment> getAllListComment(){
-		return this.listComment;
 	}
 	
 	public CalendarComment getComment(int id, int type){
@@ -72,4 +68,24 @@ public class Usuario extends Pessoa {
 			index++;
 		}
 	}
+
+	public List<CalendarComment> getListComment() {
+		return listComment;
+	}
+
+	public void setListComment(List<CalendarComment> listComment) {
+		this.listComment = listComment;
+	}
+	
+	public List<CalendarComment> getListCommentMonth(Date dataAtual){
+		List<CalendarComment> cms = new ArrayList<CalendarComment>();
+		if(this.listComment.size() > 0){
+			for (CalendarComment cm : this.listComment) {
+				if(cm.getStartDate().getMonth() == dataAtual.getMonth())
+					cms.add(cm);
+			}
+		}
+		return cms;
+	}
+	
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+
+<link href="resources/css/bootstrap.css" rel="stylesheet" />
+<link href="resources/css/style.css" rel="stylesheet" />
+
+<title>Página de Login</title>
+
+</head>
+<body>
+
+	<div id="topo">
+		<div id="msg"><h:messages style="list-style-type: none" globalOnly="true" /></div>
+		<div id="menu">
+			<ul>
+				<h:outputLink value="index.xhtml"><li>Home</li></h:outputLink>
+				<h:outputLink value="cadastroPessoa.xhtml" ><li>New Account</li></h:outputLink>
+				<h:outputLink value="login.xhtml" ><li>Login</li></h:outputLink>
+			</ul>
+		</div>
+	</div>
+	
+	<h1>Tela De Login</h1>
+	<h:form id="formLogin">
+		<h:outputLabel value="Login: " for="login"/>
+		<h:inputText  id="login" value="#{pessoaBean.nome}" required="true"/>
+		<h:message style="color:red" for="login"/>
+		<br/>
+		<h:outputLabel value="Senha: " for="senha"/>
+		<h:inputSecret  id="senha" value="#{pessoaBean.senha}" required="true"/>
+		<h:message style="color:red" for="senha"/>
+		<br/>
+		<h:commandButton value="Logar" action="#{pessoaBean.logar}" />
+		<h:outputLink value="cadastroPessoa.xhtml">Novo Cadastro</h:outputLink>
+		<br/>
+		<h:outputLink value="index.xhtml">Voltar</h:outputLink>
+	</h:form>
+	
+</body>
+</html>

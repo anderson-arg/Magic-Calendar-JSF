@@ -27,7 +27,7 @@ public class Main {
 		Date d = sdf.parse("16/03/2016");
 		c.setTime(d);
 		
-		System.out.println(c.getActualMaximum(Calendar.DAY_OF_MONTH));
+		System.out.println(c.getActualMaximum(Calendar.DAY_OF_MONTH)+" "+d.getMonth());
 
 		System.out.println(c.get(Calendar.DAY_OF_MONTH)+" "+diaSemana(c.get(Calendar.DAY_OF_WEEK))+" / "+(c.get(Calendar.MONTH)+1)+" "+mesAno(c.get(Calendar.MONTH))+" / "+c.get(Calendar.YEAR));
 		
