@@ -13,11 +13,10 @@
 <link href="resources/css/bootstrap.css" rel="stylesheet" />
 <link href="resources/css/style.css" rel="stylesheet" />
 
-<title>Página Inicial</title>
+<title>Página Usuario Pendente</title>
 
 </head>
 <body>
-
 	<div id="topo">
 		<div id="msg"><h:messages style="list-style-type: none" globalOnly="true" /></div>
 		<div id="menu">
@@ -25,7 +24,7 @@
 			<ul>
 				<li><h:outputText rendered="#{not empty pessoaBean.logado}" value="Bem Vindo, #{pessoaBean.logado.name}"/></li>
 				<h:outputLink value="index.xhtml"><li>Home</li></h:outputLink>
-				<h:outputLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="ativaUsuario.xhtml"><li id="acceptUser">Accept User</li></h:outputLink>
+				<h:outputLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="index.xhtml"><li id="acceptUser">Accept User</li></h:outputLink>
 				<h:outputLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="index.xhtml"><li id="registerHoliday">Register Holiday</li></h:outputLink>
 				<h:outputLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="altSenha.xhtml"><li id="passwordChange">Password Change</li></h:outputLink>
 				<h:commandLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.USUARIO}" action="#{pessoaBean.deleteConta}"><li id="accountDelete">AccountDelete</li></h:commandLink>
@@ -36,57 +35,29 @@
 		</h:form>
 		</div>
 	</div>
-
-	#{magicCalendarBean.gerarCalendar()}
-	<h:form>
-		<div id="dataAtual">
-			<h:commandLink value="Prev" actionListener="#{magicCalendarBean.addDataAtual(-1)}"/>
-			<b><h:outputText value="#{magicCalendarBean.dataAtualConcatenada}"/></b>
-			<h:commandLink value="Next" actionListener="#{magicCalendarBean.addDataAtual(1)}"/>
-		</div>
-		<h:dataTable var="dia" value="#{magicCalendarBean.diasCalendar}" styleClass="table table-striped">
-			<h:column>
-			<f:facet name="header">Dia da Semana</f:facet>
-				<h:outputText value="#{magicCalendarBean.diaSemana(dia.id)}" />
-			</h:column>
-			<h:column>
-			<f:facet name="header">Dia</f:facet>
-				#{dia.id}
-			</h:column>
-			<h:column>
-				<f:facet name="header">Feriado</f:facet>
-				Aqui vai ficar o feriado!
-			</h:column>
-			<h:column rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.USUARIO}">
-			<f:facet name="header">Anotações</f:facet>
-				<h:commandLink value="+" action="#{cadastroCalendarBean.setOpcAltComentario(cadastroCalendarBean.CREATE, dia, null, magicCalendarBean.dataAtual)}"/><br/>
-				<h:dataTable var="comentario" value="#{dia.comentarios}">
-					<h:column>
-						<h:commandLink value="@ " action="#{cadastroCalendarBean.setOpcAltComentario(cadastroCalendarBean.UPDATE, dia, comentario, magicCalendarBean.dataAtual)}"/>
-						<h:commandLink value="-" actionListener="#{cadastroCalendarBean.deletarComentario(dia, comentario)}"/>
-						#{comentario.text}
-					</h:column>
-				</h:dataTable>
-			</h:column>
-		</h:dataTable>
-	</h:form>
 	
-	<div id="help">
-		<table>
-			<tr>
-				<td><div id="red"></div></td>
-				<td><b>Fixed</b></td>
-			</tr>
-			<tr>
-				<td><div id="green"></div></td>
-				<td><b>Movement</b></td>
-			</tr>
-			<tr>
-				<td><div id="blue"></div></td>
-				<td><b>Substitute</b></td>
-			</tr>
-		</table>
-	</div>
+	#{cadastrarPessoaBean.listarUsuarios()}
+	
+	<h:outputText rendered="#{cadastrarPessoaBean.mostrarListaUsuario == false}" value="Nenhum usuario na lista de aprovação!"/>
+	
+	<h:form id="form" rendered="#{cadastrarPessoaBean.mostrarListaUsuario == true}">
+		<h1>Ativar Usuario Pendente</h1>
+		<h:dataTable var="usuario" value="#{cadastrarPessoaBean.usuarios}" styleClass="table table-striped">
+			<h:column>
+				<f:facet name="header">Status</f:facet>
+				 <h:selectBooleanCheckbox onclick="submit();" value="#{cadastrarPessoaBean.editavel[usuario.id]}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">Nome</f:facet>
+				<h:outputText value="#{usuario.name}" />
+			</h:column>
+			
+		</h:dataTable>
+		<h:commandButton value="Aceitar" actionListener="#{cadastrarPessoaBean.ativarUsuarios}"/>
+		<h:outputLink value="index.xhtml">Voltar</h:outputLink>
+		
+	</h:form>
 	
 </body>
 </html>

@@ -8,12 +8,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.context.Flash;
 
-import br.edu.ifpb.pweb.calendar.dao.ComentarioDAO;
-import br.edu.ifpb.pweb.calendar.dao.PersistenceUtil;
-import br.edu.ifpb.pweb.calendar.dao.PessoaDAO;
 import br.edu.ifpb.pweb.calendar.model.CalendarComment;
 import br.edu.ifpb.pweb.calendar.model.DiasCalendar;
 import br.edu.ifpb.pweb.calendar.model.Usuario;
@@ -21,26 +16,12 @@ import br.edu.ifpb.pweb.calendar.model.Usuario;
 @ManagedBean
 @ViewScoped
 public class MagicCalendarBean {
-	private final int CREATE = 0;
-	private final int UPDATE = 1;
-	
-	private String texto;
-	private Date dataInicio;
-	private Date dataFim;
-	
 	private List<DiasCalendar> diasCalendar;
 	private Date dataAtual;
 	private String dataAtualConcatenada;
 	@ManagedProperty(value="#{pessoaBean}")
 	private PessoaBean pessoaBean;
-	
-	private String tituloPagina;
-	private String valueBotao;
-	private int opcAltComentario;
-	
-	private DiasCalendar diaSelecionado;
-	private CalendarComment comentarioSelecionado;
-	
+
 	public MagicCalendarBean(){
 		this.diasCalendar = new ArrayList<DiasCalendar>();
 		this.dataAtual = new Date();
@@ -54,27 +35,19 @@ public class MagicCalendarBean {
 			data.setId(i);
 
 			if(this.pessoaBean.getLogado() != null){
-				List<CalendarComment> tmpCm = ((Usuario)this.pessoaBean.getLogado()).getListCommentMonth(this.dataAtual);
-				if(tmpCm.size() > 0){
-					for (CalendarComment cm : tmpCm) {
-						if(cm.getStartDate().getDate() == data.getId())
-							data.addCalendar(cm);
+				if(this.pessoaBean.getTipoUsuario() == this.pessoaBean.getUSUARIO()){
+					List<CalendarComment> tmpCm = ((Usuario)this.pessoaBean.getLogado()).getListCommentMonth(this.dataAtual);
+					if(tmpCm.size() > 0){
+						for (CalendarComment cm : tmpCm) {
+							if(cm.getStartDate().getDate() == data.getId() && cm.getStartDate().getYear() == this.dataAtual.getYear())
+								data.addCalendar(cm);
+						}
 					}
 				}
 			}
 			
 			this.diasCalendar.add(data);
 		}
-	}
-	
-	public void deletarComentario(DiasCalendar dia, CalendarComment cm){
-		//this.diasCalendar.get(dia.getId()-1).deleteCalendar(cm);
-		((Usuario)this.pessoaBean.getLogado()).delComment(cm);
-		ComentarioDAO cDAO = new ComentarioDAO(PersistenceUtil.getCurrentEntityManager());
-		cm.setUsuario(null);
-		cDAO.beginTransaction();
-		cDAO.delete(cm);
-		cDAO.commit();
 	}
 	
 	public int quantidadeDiaMes(Date data){
@@ -109,72 +82,6 @@ public class MagicCalendarBean {
 		return mesAno[mes];
 	}
 	
-	public String alterarComentario(){
-		ComentarioDAO cDAO = new ComentarioDAO(PersistenceUtil.getCurrentEntityManager());
-		if(this.opcAltComentario == this.CREATE){
-			CalendarComment cm = new CalendarComment();
-			cm.setText(this.texto);
-			cm.setStartDate(this.addDateSelected());
-			cm.setUsuario((Usuario)this.pessoaBean.getLogado());
-			cDAO.beginTransaction();
-			cDAO.insert(cm);
-			cDAO.commit();
-			((Usuario)this.pessoaBean.getLogado()).addComment(cm);
-		}else if(this.opcAltComentario == this.UPDATE){
-			PessoaDAO pDAO = new PessoaDAO(PersistenceUtil.getCurrentEntityManager());
-			((Usuario)this.pessoaBean.getLogado()).setComment(this.comentarioSelecionado);
-			pDAO.beginTransaction();
-			pDAO.update(this.pessoaBean.getLogado());
-			pDAO.commit();
-			
-		}
-		return "index.xhtml?faces-redirect=true";
-	}
-	
-	public Date addDateSelected(){
-		Date d = new Date();
-		d.setDate(this.diaSelecionado.getId());
-		d.setMonth(this.dataAtual.getMonth());
-		d.setYear(this.dataAtual.getYear());
-		return d;
-	}
-	
-	public String setOpcAltComentario(int opc, DiasCalendar dia, CalendarComment cm){
-		System.out.println(dia.getId());
-		this.opcAltComentario = opc;
-		if(opc == this.CREATE){
-			this.tituloPagina = "Cadastrar Comentario";
-			this.valueBotao = "Cadastrar";
-		}else if(opc == this.UPDATE){
-			this.tituloPagina = "Atualizar Comentario";
-			this.valueBotao = "Atualizar";
-			this.diaSelecionado = dia;
-			this.comentarioSelecionado = cm;
-		}
-		loadFlash();
-		return "altComentario.xhtml?faces-redirect=true";
-	}
-	
-	public void loadFlash(){
-		Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
-		flash.put("dia", this.diaSelecionado);
-		flash.put("comentario", this.comentarioSelecionado);
-		flash.put("tituloPagina", this.tituloPagina);
-		flash.put("valueBotao", this.valueBotao);
-	}
-	
-	public void unloadFlash(){
-		Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
-		if(flash != null){
-			this.setDiaSelecionado((DiasCalendar) flash.get("dia"));
-			this.setComentarioSelecionado((CalendarComment) flash.get("comentario"));
-			this.setTituloPagina((String) flash.get("tituloPagina"));
-			this.setValueBotao((String) flash.get("valueBotao"));
-			
-			//this.setTexto(this.comentarioSelecionado.getText());
-		}
-	}
-	
 	public List<DiasCalendar> getDiasCalendar() {
 		return diasCalendar;
 	}
@@ -199,80 +106,12 @@ public class MagicCalendarBean {
 		this.pessoaBean = pessoaBean;
 	}
 
-	public String getTituloPagina() {
-		return tituloPagina;
-	}
-
-	public void setTituloPagina(String tituloPagina) {
-		this.tituloPagina = tituloPagina;
-	}
-
-	public String getValueBotao() {
-		return valueBotao;
-	}
-
-	public void setValueBotao(String valueBotao) {
-		this.valueBotao = valueBotao;
-	}
-
-	public int getCREATE() {
-		return CREATE;
-	}
-
-	public int getUPDATE() {
-		return UPDATE;
-	}
-
-	public DiasCalendar getDiaSelecionado() {
-		return diaSelecionado;
-	}
-
-	public void setDiaSelecionado(DiasCalendar diaSelecionado) {
-		this.diaSelecionado = diaSelecionado;
-	}
-
-	public int getOpcAltComentario() {
-		return opcAltComentario;
-	}
-
 	public Date getDataAtual() {
 		return dataAtual;
 	}
 
 	public void setDataAtual(Date dataAtual) {
 		this.dataAtual = dataAtual;
-	}
-
-	public CalendarComment getComentarioSelecionado() {
-		return comentarioSelecionado;
-	}
-
-	public void setComentarioSelecionado(CalendarComment comentarioSelecionado) {
-		this.comentarioSelecionado = comentarioSelecionado;
-	}
-
-	public String getTexto() {
-		return texto;
-	}
-
-	public void setTexto(String texto) {
-		this.texto = texto;
-	}
-
-	public Date getDataInicio() {
-		return dataInicio;
-	}
-
-	public void setDataInicio(Date dataInicio) {
-		this.dataInicio = dataInicio;
-	}
-
-	public Date getDataFim() {
-		return dataFim;
-	}
-
-	public void setDataFim(Date dataFim) {
-		this.dataFim = dataFim;
 	}
 
 }

@@ -13,7 +13,7 @@
 <link href="resources/css/bootstrap.css" rel="stylesheet" />
 <link href="resources/css/style.css" rel="stylesheet" />
 
-<title>Página ADD/UPDATE Comentario</title>
+<title>Página add Comentario</title>
 
 </head>
 <body>
@@ -36,13 +36,13 @@
 		</div>
 	</div>
 
-	<h1>Alterar Comentario</h1>
+	<h1>Adicionar Comentario</h1>
 	<h:form id="form">
 		<h:outputLabel value="Comentario: " for="comentario"/>
-		<h:inputText  id="comentario" value="#{magicCalendarBean.pessoaBean.calendarSelecionado.text}" required="true"/>
+		<h:inputText  id="comentario" value="#{cadastroCalendarBean.texto}" required="true"/>
 		<h:message style="color:red" for="comentario"/>
 		<br/>
-		<h:commandButton value="Atualizar" action="#{cadastroCalendarBean.altComentario}" />
+		<h:commandButton value="Adicionar" action="#{cadastroCalendarBean.addComentario}" />
 		<h:outputLink value="index.xhtml">Voltar</h:outputLink>
 	</h:form>
 	

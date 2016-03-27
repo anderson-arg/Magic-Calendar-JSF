@@ -1,10 +1,14 @@
 package br.edu.ifpb.pweb.calendar.beans;
 
+import java.util.Date;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import br.edu.ifpb.pweb.calendar.dao.PersistenceUtil;
 import br.edu.ifpb.pweb.calendar.dao.PessoaDAO;
+import br.edu.ifpb.pweb.calendar.model.Calendar;
+import br.edu.ifpb.pweb.calendar.model.DiasCalendar;
 import br.edu.ifpb.pweb.calendar.model.Pessoa;
 import br.edu.ifpb.pweb.calendar.model.Usuario;
 
@@ -19,6 +23,11 @@ public class PessoaBean extends GenericBean {
 	private String senha;
 	private Pessoa logado;
 	private int tipoUsuario;
+	
+	private Date dataAtual;
+	private DiasCalendar diaSelecionado;
+	private Calendar calendarSelecionado;
+	private int opcAltComentario;
 	
 	public String logar(){
 		PessoaDAO pDAO = new PessoaDAO(PersistenceUtil.getCurrentEntityManager());
@@ -93,6 +102,38 @@ public class PessoaBean extends GenericBean {
 
 	public int getTipoUsuario() {
 		return tipoUsuario;
+	}
+
+	public Date getDataAtual() {
+		return dataAtual;
+	}
+
+	public void setDataAtual(Date dataAtual) {
+		this.dataAtual = dataAtual;
+	}
+
+	public DiasCalendar getDiaSelecionado() {
+		return diaSelecionado;
+	}
+
+	public void setDiaSelecionado(DiasCalendar diaSelecionado) {
+		this.diaSelecionado = diaSelecionado;
+	}
+
+	public Calendar getCalendarSelecionado() {
+		return calendarSelecionado;
+	}
+
+	public void setCalendarSelecionado(Calendar calendarSelecionado) {
+		this.calendarSelecionado = calendarSelecionado;
+	}
+
+	public int getOpcAltComentario() {
+		return opcAltComentario;
+	}
+
+	public void setOpcAltComentario(int opcAltComentario) {
+		this.opcAltComentario = opcAltComentario;
 	}
 	
 }

@@ -81,7 +81,7 @@ public class Usuario extends Pessoa {
 		List<CalendarComment> cms = new ArrayList<CalendarComment>();
 		if(this.listComment.size() > 0){
 			for (CalendarComment cm : this.listComment) {
-				if(cm.getStartDate().getMonth() == dataAtual.getMonth())
+				if(cm.getStartDate().getMonth() == dataAtual.getMonth() && cm.getStartDate().getYear() == dataAtual.getYear())
 					cms.add(cm);
 			}
 		}
