@@ -23,6 +23,15 @@ public class PessoaDAO extends GenericDAOJPAImpl<Pessoa, Long>{
 		super(em);
 	}
 	
+	public Pessoa read(Pessoa p){
+		try{
+			Query q = this.getEntityManager().createQuery("select p from Pessoa p where p.id ='"+p.getId()+"' ");
+			return (Pessoa) q.getSingleResult();
+		}catch(NoResultException e){
+			return null;
+		}
+	}
+	
 	public Pessoa readUser(String name, String pass){
 		try{
 			Query q = this.getEntityManager().createQuery("select p from Pessoa p where p.name = '"+name+"' AND p.password = '"+pass+"' ");

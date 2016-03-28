@@ -5,7 +5,12 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html" 
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions">
+      xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions">   
+      
+<c:if test="#{not empty pessoaBean.logado}">
+	#{facesContext.externalContext.redirect("index.xhtml")}
+</c:if>
+         
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 

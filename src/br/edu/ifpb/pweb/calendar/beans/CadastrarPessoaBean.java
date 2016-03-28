@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import br.edu.ifpb.pweb.calendar.dao.AdminDAO;
 import br.edu.ifpb.pweb.calendar.dao.PersistenceUtil;
 import br.edu.ifpb.pweb.calendar.dao.PessoaDAO;
 import br.edu.ifpb.pweb.calendar.dao.UsuarioDAO;
@@ -18,6 +19,8 @@ import br.edu.ifpb.pweb.calendar.model.Usuario;
 @ManagedBean
 @ViewScoped
 public class CadastrarPessoaBean extends GenericBean {
+	private final String ADMIN = "admin";
+	
 	private String nome;
 	private String senha;
 	private String reSenha;
@@ -38,10 +41,19 @@ public class CadastrarPessoaBean extends GenericBean {
 			PessoaDAO pDAO = new PessoaDAO(PersistenceUtil.getCurrentEntityManager());
 			Pessoa p = null;
 			
+			if(this.nome.equals(this.ADMIN)){
+				tipo=0;
+			}
+			
 			if(tipo == 0){
 				p = new Admin();
 				p.setName(this.nome);
 				p.setSenha(this.senha);
+				if(new AdminDAO(PersistenceUtil.getCurrentEntityManager()).findAll().size() > 0){
+					System.out.println("entrou aq");
+					this.addInfoMessage("No sistema so pode existir apenas um administrador!");
+					return "index.xhtml";
+				}
 			}else if(tipo == 1){
 				p = new Usuario(this.nome, this.senha);				
 			}

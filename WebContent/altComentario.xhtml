@@ -7,6 +7,10 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions">
      
+<c:if test="#{empty pessoaBean.logado or pessoaBean.tipoUsuario == pessoaBean.ADMIN}">
+	#{facesContext.externalContext.redirect("index.xhtml")}
+</c:if>     
+     
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 
