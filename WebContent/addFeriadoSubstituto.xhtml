@@ -17,7 +17,7 @@
 <link href="resources/css/bootstrap.css" rel="stylesheet" />
 <link href="resources/css/style.css" rel="stylesheet" />
 
-<title>Página UPDATE Feriado</title>
+<title>Página add Feriado Substituto</title>
 
 </head>
 <body>
@@ -28,20 +28,28 @@
 			<ul>
 				<li><h:outputText value="Bem Vindo, #{pessoaBean.logado.name}"/></li>
 				<h:outputLink value="index.xhtml"><li>Home</li></h:outputLink>
-				<h:commandLink action="#{pessoaBean.deleteConta}"><li id="accountDelete">AccountDelete</li></h:commandLink>
+				<h:outputLink value="ativaUsuario.xhtml"><li id="acceptUser">Accept User</li></h:outputLink>
+				<h:outputLink value="index.xhtml"><li id="registerHoliday">Register Holiday</li></h:outputLink>
+				<h:outputLink value="altSenha.xhtml"><li id="passwordChange">Password Change</li></h:outputLink>
 				<h:commandLink action="#{pessoaBean.desLogar}"><li>Logout</li></h:commandLink>
 			</ul>
 		</h:form>
 		</div>
 	</div>
 
-	<h1>Alterar Feriado</h1>
+	<h1>Adicionar Feriado Substituto</h1>
 	<h:form id="form">
-		<h:outputLabel value="Nome Feriado: " for="nome"/>
-		<h:inputText  id="nome" value="#{pessoaBean.diaSelecionado.feriado.text}" required="true"/>
-		<h:message style="color:red" for="nome"/>
+		#{cadastroCalendarBean.carregarSelect()}
+		<h:outputLabel value="Data Fixo: "/>
+		<h:selectOneMenu value="#{pessoaBean.calendarSelecionado}" required="true">
+			<f:selectItems var="feriado" value="#{cadastroCalendarBean.feriadosFixo}" itemLabel="#{feriado.startDate} - #{feriado.text}" itemValue="#{feriado}"/>
+		</h:selectOneMenu>
 		<br/>
-		<h:commandButton value="Atualizar" action="#{cadastroCalendarBean.altFeriado}" />
+		<h:outputLabel value="Data Substituto: " for="dataS"/>
+		<h:inputText  id="dataS" value="#{cadastroCalendarBean.dataInicio}" converter="javax.faces.DateTime" pattern="dd/MM/yyyy" required="true"/>
+		<h:message style="color:red" for="dataS"/>
+		<br/>
+		<h:commandButton value="Substituir" action="#{cadastroCalendarBean.addFeriadoSubstituto}" />
 		<h:outputLink value="index.xhtml">Voltar</h:outputLink>
 	</h:form>
 	

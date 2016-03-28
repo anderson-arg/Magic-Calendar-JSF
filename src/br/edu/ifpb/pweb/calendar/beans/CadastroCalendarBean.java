@@ -1,9 +1,11 @@
 package br.edu.ifpb.pweb.calendar.beans;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 
 import br.edu.ifpb.pweb.calendar.dao.ComentarioDAO;
 import br.edu.ifpb.pweb.calendar.dao.FeriadoDAO;
@@ -19,6 +21,7 @@ import br.edu.ifpb.pweb.calendar.model.Usuario;
 import br.edu.ifpb.pweb.calendar.util.Color;
 
 @ManagedBean
+@ViewScoped
 public class CadastroCalendarBean extends GenericBean{
 	private final int CREATE = 0;
 	private final int UPDATE = 1;
@@ -26,6 +29,7 @@ public class CadastroCalendarBean extends GenericBean{
 	private String texto;
 	private Date dataInicio;
 	private Date dataFim;
+	private List<CalendarFixedHoliday> feriadosFixo;
 	
 	@ManagedProperty(value="#{pessoaBean}")
 	private PessoaBean pessoaBean;
@@ -91,7 +95,7 @@ public class CadastroCalendarBean extends GenericBean{
 		fDAO.commit();
 	}
 	
-	public String altFeriadoFixo(){
+	public String altFeriado(){
 		FeriadoDAO pDAO = new FeriadoDAO(PersistenceUtil.getCurrentEntityManager());
 		pDAO.beginTransaction();
 		pDAO.update(this.pessoaBean.getDiaSelecionado().getFeriado());
@@ -111,9 +115,29 @@ public class CadastroCalendarBean extends GenericBean{
 		ffDAO.beginTransaction();
 		ffDAO.insert(cf);
 		ffDAO.commit();
+		((Admin)this.pessoaBean.getLogado()).setFeriadoFixo(cf);
 		
 		this.addInfoMessage("Feriado adicionado com sucesso!");
 		return "index.xhtml";
+	}
+	
+	// esta travando aqui!!!
+	public String addFeriadoSubstituto(){
+		FeriadoFixoDAO ffDAO = new FeriadoFixoDAO(PersistenceUtil.getCurrentEntityManager());
+		this.pessoaBean.getCalendarSelecionado().setColor(Color.BLUE);
+		this.pessoaBean.getCalendarSelecionado().setStartDate(this.dataInicio);
+		((CalendarFixedHoliday)this.pessoaBean.getCalendarSelecionado()).setSubstituto((CalendarFixedHoliday)this.pessoaBean.getCalendarSelecionado());
+		ffDAO.beginTransaction();
+		ffDAO.update((CalendarFixedHoliday)this.pessoaBean.getCalendarSelecionado());
+		ffDAO.commit();
+		((Admin)this.pessoaBean.getLogado()).setFeriadoFixo((CalendarFixedHoliday)this.pessoaBean.getCalendarSelecionado());
+		
+		this.addInfoMessage("Feriado substituido com sucesso!");
+		return "index.xhtml";
+	}
+	
+	public void carregarSelect(){
+		this.feriadosFixo = ((Admin)this.pessoaBean.getLogado()).getListFixedHoliday();
 	}
 	
 	public Date addDateSelected(){
@@ -162,6 +186,14 @@ public class CadastroCalendarBean extends GenericBean{
 
 	public int getUPDATE() {
 		return UPDATE;
+	}
+
+	public List<CalendarFixedHoliday> getFeriadosFixo() {
+		return feriadosFixo;
+	}
+
+	public void setFeriadosFixo(List<CalendarFixedHoliday> feriadosFixo) {
+		this.feriadosFixo = feriadosFixo;
 	}
 	
 }
