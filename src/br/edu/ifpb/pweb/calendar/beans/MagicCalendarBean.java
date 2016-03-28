@@ -9,9 +9,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import br.edu.ifpb.pweb.calendar.dao.FeriadoFixoDAO;
+import br.edu.ifpb.pweb.calendar.dao.PersistenceUtil;
 import br.edu.ifpb.pweb.calendar.model.CalendarComment;
+import br.edu.ifpb.pweb.calendar.model.CalendarFixedHoliday;
 import br.edu.ifpb.pweb.calendar.model.DiasCalendar;
 import br.edu.ifpb.pweb.calendar.model.Usuario;
+import br.edu.ifpb.pweb.calendar.util.Color;
 
 @ManagedBean
 @ViewScoped
@@ -33,14 +37,38 @@ public class MagicCalendarBean {
 		for(int i=1; i<=quantidadeDiaMes(this.dataAtual); i++){
 			DiasCalendar data = new DiasCalendar();
 			data.setId(i);
-
+			
+			// pintando o dia atual
+			Date tmpDate = new Date();
+			if(data.getId() == tmpDate.getDate() && this.dataAtual.getMonth() == tmpDate.getMonth() && this.dataAtual.getYear() == tmpDate.getYear())
+				data.setColor(Color.PINK);
+			
+			
+			// gerando os feriados
+			List<CalendarFixedHoliday> tmpCf = new FeriadoFixoDAO(PersistenceUtil.getCurrentEntityManager()).findAll();
+			if(tmpCf.size() > 0){
+				for (CalendarFixedHoliday cf : tmpCf) {	
+					if(cf.getSubstituto() != null && cf.getSubstituto().getStartDate().getYear() == this.dataAtual.getYear()){
+						if(cf.getSubstituto().getStartDate().getDate() == data.getId() && cf.getSubstituto().getStartDate().getMonth() == this.dataAtual.getMonth()){						
+							cf.getSubstituto().setColor(Color.BLUE);
+							data.setFeriado(cf.getSubstituto());
+						}
+					}else if(cf.getStartDate().getDate() == data.getId() && cf.getStartDate().getMonth() == this.dataAtual.getMonth()){
+						cf.setColor(Color.RED);
+						data.setFeriado(cf);
+					}		
+				}
+			}
+			
+			// gerando os comentarios do usuario online
 			if(this.pessoaBean.getLogado() != null){
+				
 				if(this.pessoaBean.getTipoUsuario() == this.pessoaBean.getUSUARIO()){
 					List<CalendarComment> tmpCm = ((Usuario)this.pessoaBean.getLogado()).getListCommentMonth(this.dataAtual);
 					if(tmpCm.size() > 0){
 						for (CalendarComment cm : tmpCm) {
 							if(cm.getStartDate().getDate() == data.getId() && cm.getStartDate().getYear() == this.dataAtual.getYear())
-								data.addCalendar(cm);
+								data.addComentario(cm);
 						}
 					}
 				}

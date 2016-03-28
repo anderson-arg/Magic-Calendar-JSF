@@ -6,11 +6,17 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
 import br.edu.ifpb.pweb.calendar.dao.ComentarioDAO;
+import br.edu.ifpb.pweb.calendar.dao.FeriadoDAO;
+import br.edu.ifpb.pweb.calendar.dao.FeriadoFixoDAO;
 import br.edu.ifpb.pweb.calendar.dao.PersistenceUtil;
 import br.edu.ifpb.pweb.calendar.dao.PessoaDAO;
+import br.edu.ifpb.pweb.calendar.model.Admin;
+import br.edu.ifpb.pweb.calendar.model.Calendar;
 import br.edu.ifpb.pweb.calendar.model.CalendarComment;
+import br.edu.ifpb.pweb.calendar.model.CalendarFixedHoliday;
 import br.edu.ifpb.pweb.calendar.model.DiasCalendar;
 import br.edu.ifpb.pweb.calendar.model.Usuario;
+import br.edu.ifpb.pweb.calendar.util.Color;
 
 @ManagedBean
 public class CadastroCalendarBean extends GenericBean{
@@ -59,8 +65,7 @@ public class CadastroCalendarBean extends GenericBean{
 	}
 	
 	public String setOpcAltComentario(int opc, DiasCalendar dia, CalendarComment cm, Date dataAtual){
-		this.pessoaBean.setOpcAltComentario(opc);
-		if(this.pessoaBean.getOpcAltComentario() == this.CREATE){
+		if(opc == this.CREATE){
 			this.pessoaBean.setDiaSelecionado(dia);
 			this.pessoaBean.setDataAtual(dataAtual);
 			return "addComentario.xhtml?faces-redirect=true";
@@ -71,6 +76,44 @@ public class CadastroCalendarBean extends GenericBean{
 			return "altComentario.xhtml?faces-redirect=true";
 		}
 		return null;
+	}
+	
+	public String setOpcAltFeriado(DiasCalendar dia, Date dataAtual){
+		this.pessoaBean.setDiaSelecionado(dia);
+		this.pessoaBean.setDataAtual(dataAtual);
+		return "altFeriado.xhtml?faces-redirect=true";
+	}
+	
+	public void deletarFeriado(Calendar feriado){
+		FeriadoDAO fDAO = new FeriadoDAO(PersistenceUtil.getCurrentEntityManager());
+		fDAO.beginTransaction();
+		fDAO.delete(feriado);
+		fDAO.commit();
+	}
+	
+	public String altFeriadoFixo(){
+		FeriadoDAO pDAO = new FeriadoDAO(PersistenceUtil.getCurrentEntityManager());
+		pDAO.beginTransaction();
+		pDAO.update(this.pessoaBean.getDiaSelecionado().getFeriado());
+		pDAO.commit();
+		this.addInfoMessage("Feriado atualizado com sucesso!");
+		return "index.xhtml";
+	}
+	
+	public String addFeriadoFixo(){
+		FeriadoFixoDAO ffDAO = new FeriadoFixoDAO(PersistenceUtil.getCurrentEntityManager());
+		CalendarFixedHoliday cf = new CalendarFixedHoliday();
+		cf.setText(this.texto);
+		cf.setStartDate(this.dataInicio);
+		cf.setColor(Color.RED);
+		cf.setAdmin((Admin) this.pessoaBean.getLogado());
+		
+		ffDAO.beginTransaction();
+		ffDAO.insert(cf);
+		ffDAO.commit();
+		
+		this.addInfoMessage("Feriado adicionado com sucesso!");
+		return "index.xhtml";
 	}
 	
 	public Date addDateSelected(){

@@ -17,7 +17,7 @@
 <link href="resources/css/bootstrap.css" rel="stylesheet" />
 <link href="resources/css/style.css" rel="stylesheet" />
 
-<title>Página Altera Senha</title>
+<title>Página UPDATE Feriado</title>
 
 </head>
 <body>
@@ -28,26 +28,20 @@
 			<ul>
 				<li><h:outputText value="Bem Vindo, #{pessoaBean.logado.name}"/></li>
 				<h:outputLink value="index.xhtml"><li>Home</li></h:outputLink>
-				<h:outputLink value="ativaUsuario.xhtml"><li id="acceptUser">Accept User</li></h:outputLink>
-				<h:outputLink value="index.xhtml"><li id="registerHoliday">Register Holiday</li></h:outputLink>
-				<h:outputLink value="altSenha.xhtml"><li id="passwordChange">Password Change</li></h:outputLink>
+				<h:commandLink action="#{pessoaBean.deleteConta}"><li id="accountDelete">AccountDelete</li></h:commandLink>
 				<h:commandLink action="#{pessoaBean.desLogar}"><li>Logout</li></h:commandLink>
 			</ul>
 		</h:form>
 		</div>
 	</div>
 
-	<h1>Alterar Senha</h1>
+	<h1>Alterar Feriado</h1>
 	<h:form id="form">
-		<h:outputLabel value="Nova Senha: " for="senha"/>
-		<h:inputSecret  id="senha" value="#{cadastrarPessoaBean.senha}" required="true"/>
-		<h:message style="color:red" for="senha"/>
+		<h:outputLabel value="Nome Feriado: " for="nome"/>
+		<h:inputText  id="nome" value="#{pessoaBean.diaSelecionado.feriado.text}" required="true"/>
+		<h:message style="color:red" for="nome"/>
 		<br/>
-		<h:outputLabel value="reSenha: " for="reRenha"/>
-		<h:inputSecret  id="reSenha" value="#{cadastrarPessoaBean.reSenha}" required="true"/>
-		<h:message style="color:red" for="reSenha"/>
-		<br/>
-		<h:commandButton value="Atualizar" action="#{cadastrarPessoaBean.alterarSenha}" />
+		<h:commandButton value="Atualizar" action="#{cadastroCalendarBean.altFeriadoFixo}" />
 		<h:outputLink value="index.xhtml">Voltar</h:outputLink>
 	</h:form>
 	

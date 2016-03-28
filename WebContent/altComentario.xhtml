@@ -17,7 +17,7 @@
 <link href="resources/css/bootstrap.css" rel="stylesheet" />
 <link href="resources/css/style.css" rel="stylesheet" />
 
-<title>Página ADD/UPDATE Comentario</title>
+<title>Página UPDATE Comentario</title>
 
 </head>
 <body>
@@ -26,15 +26,10 @@
 		<div id="menu">
 		<h:form>
 			<ul>
-				<li><h:outputText rendered="#{not empty pessoaBean.logado}" value="Bem Vindo, #{pessoaBean.logado.name}"/></li>
+				<li><h:outputText value="Bem Vindo, #{pessoaBean.logado.name}"/></li>
 				<h:outputLink value="index.xhtml"><li>Home</li></h:outputLink>
-				<h:outputLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="index.xhtml"><li id="acceptUser">Accept User</li></h:outputLink>
-				<h:outputLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="index.xhtml"><li id="registerHoliday">Register Holiday</li></h:outputLink>
-				<h:outputLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="altSenha.xhtml"><li id="passwordChange">Password Change</li></h:outputLink>
-				<h:commandLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.USUARIO}" action="#{pessoaBean.deleteConta}"><li id="accountDelete">AccountDelete</li></h:commandLink>
-				<h:commandLink rendered="#{not empty pessoaBean.logado}" action="#{pessoaBean.desLogar}"><li>Logout</li></h:commandLink>
-				<h:outputLink rendered="#{empty pessoaBean.logado}" value="cadastroPessoa.xhtml" ><li>New Account</li></h:outputLink>
-				<h:outputLink rendered="#{empty pessoaBean.logado}" value="login.xhtml" ><li>Login</li></h:outputLink>
+				<h:commandLink action="#{pessoaBean.deleteConta}"><li id="accountDelete">AccountDelete</li></h:commandLink>
+				<h:commandLink action="#{pessoaBean.desLogar}"><li>Logout</li></h:commandLink>
 			</ul>
 		</h:form>
 		</div>
@@ -43,7 +38,7 @@
 	<h1>Alterar Comentario</h1>
 	<h:form id="form">
 		<h:outputLabel value="Comentario: " for="comentario"/>
-		<h:inputText  id="comentario" value="#{magicCalendarBean.pessoaBean.calendarSelecionado.text}" required="true"/>
+		<h:inputText  id="comentario" value="#{pessoaBean.calendarSelecionado.text}" required="true"/>
 		<h:message style="color:red" for="comentario"/>
 		<br/>
 		<h:commandButton value="Atualizar" action="#{cadastroCalendarBean.altComentario}" />

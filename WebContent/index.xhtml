@@ -51,11 +51,17 @@
 			</h:column>
 			<h:column>
 			<f:facet name="header">Dia</f:facet>
-				#{dia.id}
+				<h:outputText style="color:#{dia.color};" value="#{dia.id}"/>
 			</h:column>
 			<h:column>
 				<f:facet name="header">Feriado</f:facet>
-				Aqui vai ficar o feriado!
+				<h:dataTable var="feriado" value="#{dia.feriado}">
+					<h:column>
+						<h:commandLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="@ " action="#{cadastroCalendarBean.setOpcAltFeriado(dia, magicCalendarBean.dataAtual)}"/>
+						<h:commandLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="- " actionListener="#{cadastroCalendarBean.deletarFeriado(feriado)}"/>
+						<h:outputText style="color:#{feriado.color};" value="#{feriado.text}"/>
+					</h:column>
+				</h:dataTable>
 			</h:column>
 			<h:column rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.USUARIO}">
 			<f:facet name="header">Anotações</f:facet>
@@ -63,7 +69,7 @@
 				<h:dataTable var="comentario" value="#{dia.comentarios}">
 					<h:column>
 						<h:commandLink value="@ " action="#{cadastroCalendarBean.setOpcAltComentario(cadastroCalendarBean.UPDATE, dia, comentario, magicCalendarBean.dataAtual)}"/>
-						<h:commandLink value="-" actionListener="#{cadastroCalendarBean.deletarComentario(dia, comentario)}"/>
+						<h:commandLink value="- " actionListener="#{cadastroCalendarBean.deletarComentario(dia, comentario)}"/>
 						#{comentario.text}
 					</h:column>
 				</h:dataTable>

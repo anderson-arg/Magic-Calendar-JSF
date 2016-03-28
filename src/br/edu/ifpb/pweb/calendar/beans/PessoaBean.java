@@ -27,7 +27,7 @@ public class PessoaBean extends GenericBean {
 	private Date dataAtual;
 	private DiasCalendar diaSelecionado;
 	private Calendar calendarSelecionado;
-	private int opcAltComentario;
+	
 	
 	public String logar(){
 		PessoaDAO pDAO = new PessoaDAO(PersistenceUtil.getCurrentEntityManager());
@@ -126,14 +126,6 @@ public class PessoaBean extends GenericBean {
 
 	public void setCalendarSelecionado(Calendar calendarSelecionado) {
 		this.calendarSelecionado = calendarSelecionado;
-	}
-
-	public int getOpcAltComentario() {
-		return opcAltComentario;
-	}
-
-	public void setOpcAltComentario(int opcAltComentario) {
-		this.opcAltComentario = opcAltComentario;
 	}
 	
 }

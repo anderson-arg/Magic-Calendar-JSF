@@ -5,40 +5,44 @@ import java.util.List;
 
 public class DiasCalendar extends Calendar {
 	
-	private List<Calendar> calendarios;
+	private Calendar feriado;
+	private List<CalendarComment> comentarios;
 	
 	public DiasCalendar(){
-		this.calendarios = new ArrayList<Calendar>();
+		this.comentarios = new ArrayList<CalendarComment>();
 	}
 	
-	public void addCalendar(Calendar calendar) {
-		this.calendarios.add(calendar);
+	public void addComentario(CalendarComment comentario) {
+		this.comentarios.add(comentario);
 	}
 	
-	public List<Calendar> getCalendarios() {
-		return calendarios;
+	public Calendar getFeriado() {
+		return feriado;
 	}
-	
-	public void updateCalendar(Calendar calendar){
+
+	public void setFeriado(Calendar feriado) {
+		this.feriado = feriado;
+	}
+
+	public void setComentarios(List<CalendarComment> comentarios) {
+		this.comentarios = comentarios;
+	}
+
+	public void updateCalendar(CalendarComment cometario){
 		int index = 0;
-		for(Calendar c : this.calendarios){
-			if(c.equals(calendar))
-				this.calendarios.set(index, calendar);
+		for(CalendarComment c : this.comentarios){
+			if(c.equals(cometario))
+				this.comentarios.set(index, cometario);
 			index++;
 		}
 	}
 
-	public void deleteCalendar(Calendar calendar){
-		this.calendarios.remove(calendar);
+	public void deleteComentario(CalendarComment comentario){
+		this.comentarios.remove(comentario);
 	}
-	
-	public List<CalendarComment> getComentarios(){
-		List<CalendarComment> cms = new ArrayList<CalendarComment>();
-		for (Calendar c : this.calendarios) {
-			if(c instanceof CalendarComment)
-				cms.add((CalendarComment)c);
-		}
-		return cms;
+
+	public List<CalendarComment> getComentarios() {
+		return comentarios;
 	}
 	
 }

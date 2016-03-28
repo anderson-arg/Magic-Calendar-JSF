@@ -17,7 +17,7 @@
 <link href="resources/css/bootstrap.css" rel="stylesheet" />
 <link href="resources/css/style.css" rel="stylesheet" />
 
-<title>Página Altera Senha</title>
+<title>Página add Feriado Fixo</title>
 
 </head>
 <body>
@@ -37,17 +37,17 @@
 		</div>
 	</div>
 
-	<h1>Alterar Senha</h1>
+	<h1>Adicionar Feriado Fixo</h1>
 	<h:form id="form">
-		<h:outputLabel value="Nova Senha: " for="senha"/>
-		<h:inputSecret  id="senha" value="#{cadastrarPessoaBean.senha}" required="true"/>
-		<h:message style="color:red" for="senha"/>
+		<h:outputLabel value="Nome do Feriado: " for="nome"/>
+		<h:inputText  id="nome" value="#{cadastroCalendarBean.texto}" required="true"/>
+		<h:message style="color:red" for="nome"/>
 		<br/>
-		<h:outputLabel value="reSenha: " for="reRenha"/>
-		<h:inputSecret  id="reSenha" value="#{cadastrarPessoaBean.reSenha}" required="true"/>
-		<h:message style="color:red" for="reSenha"/>
+		<h:outputLabel value="Data: " for="data"/>
+		<h:inputText  id="data" value="#{cadastroCalendarBean.dataInicio}" converter="javax.faces.DateTime" pattern="dd/MM/yyyy" required="true"/>
+		<h:message style="color:red" for="data"/>
 		<br/>
-		<h:commandButton value="Atualizar" action="#{cadastrarPessoaBean.alterarSenha}" />
+		<h:commandButton value="Adicionar" action="#{cadastroCalendarBean.addFeriadoFixo}" />
 		<h:outputLink value="index.xhtml">Voltar</h:outputLink>
 	</h:form>
 	

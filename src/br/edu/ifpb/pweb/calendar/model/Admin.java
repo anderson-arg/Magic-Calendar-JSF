@@ -5,45 +5,31 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-
-import org.hibernate.type.CalendarType;
 
 @Entity
 public class Admin extends Pessoa {
 	@OneToMany(mappedBy="admin", cascade=CascadeType.ALL, orphanRemoval=true)
-	private List<CalendarFixedHoliday> listHoliday;
+	private List<CalendarFixedHoliday> listFixedHoliday;
+	@OneToMany(mappedBy="admin", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<CalendarMobileHoliday> listMobileHolidays;
 	
 	public Admin(){
 		super();
-		this.listHoliday = new ArrayList<CalendarFixedHoliday>();
+		this.listFixedHoliday = new ArrayList<CalendarFixedHoliday>();
 	}
 	
-	public void addHoliday(CalendarFixedHoliday holiday){
+	public void addFeriadoFixo(CalendarFixedHoliday holiday){
 		holiday.setAdmin(this);
-		this.listHoliday.add(holiday);
+		this.listFixedHoliday.add(holiday);
 	}
 	
-	public void delHoliday(CalendarFixedHoliday holiday){
-		this.listHoliday.remove(holiday);
+	public void delFeriadoFixo(CalendarFixedHoliday holiday){
+		this.listFixedHoliday.remove(holiday);
 	}
 	
-	public List<CalendarFixedHoliday> getAllListHoliday(){
-		return this.listHoliday;
-	}
-	
-	public CalendarFixedHoliday getHoliday(int id, int type){
-		for(CalendarFixedHoliday holiday : listHoliday){
-			if(holiday.getId() == id /*&& holiday.getType() == type*/ ){
-				return holiday;
-			}
-		}
-		return null;
-	}
-	
-	public CalendarFixedHoliday getHoliday(int id){
-		for(CalendarFixedHoliday holiday : listHoliday){
+	public CalendarFixedHoliday getFeriadoFixo(int id){
+		for(CalendarFixedHoliday holiday : listFixedHoliday){
 			if(holiday.getId() == id){
 				return holiday;
 			}
@@ -51,30 +37,30 @@ public class Admin extends Pessoa {
 		return null;
 	}
 	
-	public void setHoliday(CalendarFixedHoliday ch){
+	public void setFeriadoFixo(CalendarFixedHoliday ch){
 		int index = 0;
-		for(CalendarFixedHoliday holiday : listHoliday){
+		for(CalendarFixedHoliday holiday : listFixedHoliday){
 			if(holiday.getId() == ch.getId()){
-				this.listHoliday.set(index, ch);
+				this.listFixedHoliday.set(index, ch);
 			}
 			index++;
 		}
 	}
-	
-	public List<CalendarFixedHoliday> getListFixedHoliday(){
-		List<CalendarFixedHoliday> list = new ArrayList<CalendarFixedHoliday>();
-		for(CalendarFixedHoliday holiday : listHoliday){
-			/*if(holiday.getType() == CalendarType.CALENDAR_FIXED){
-				list.add(holiday);
-			}*/
-		}
-		return list;
+
+	public List<CalendarFixedHoliday> getListFixedHoliday() {
+		return listFixedHoliday;
 	}
-	
-	public void setListFixedHoliday(List<CalendarFixedHoliday> list){
-		for(CalendarFixedHoliday ch : list){
-			setHoliday(ch);
-		}
+
+	public void setListFixedHoliday(List<CalendarFixedHoliday> listFixedHoliday) {
+		this.listFixedHoliday = listFixedHoliday;
+	}
+
+	public List<CalendarMobileHoliday> getListMobileHolidays() {
+		return listMobileHolidays;
+	}
+
+	public void setListMobileHolidays(List<CalendarMobileHoliday> listMobileHolidays) {
+		this.listMobileHolidays = listMobileHolidays;
 	}
 	
 }
