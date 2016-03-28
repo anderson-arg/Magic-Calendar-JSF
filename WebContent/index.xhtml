@@ -57,19 +57,19 @@
 				<f:facet name="header">Feriado</f:facet>
 				<h:dataTable var="feriado" value="#{dia.feriado}">
 					<h:column>
-						<h:commandLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="@ " action="#{cadastroCalendarBean.setOpcAltFeriado(dia, magicCalendarBean.dataAtual)}"/>
-						<h:commandLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="- " actionListener="#{cadastroCalendarBean.deletarFeriado(feriado)}"/>
+						<h:commandButton image="img/atualizar.png" rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" action="#{cadastroCalendarBean.setOpcAltFeriado(dia, magicCalendarBean.dataAtual)}"/>
+						<h:commandButton image="img/delete.png" rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" actionListener="#{cadastroCalendarBean.deletarFeriado(feriado)}"/>
 						<h:outputText style="color:#{feriado.color};" value="#{feriado.text}"/>
 					</h:column>
 				</h:dataTable>
 			</h:column>
 			<h:column rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.USUARIO}">
 			<f:facet name="header">Anotações</f:facet>
-				<h:commandLink value="+" action="#{cadastroCalendarBean.setOpcAltComentario(cadastroCalendarBean.CREATE, dia, null, magicCalendarBean.dataAtual)}"/><br/>
+				<h:commandButton image="img/add.png" action="#{cadastroCalendarBean.setOpcAltComentario(cadastroCalendarBean.CREATE, dia, null, magicCalendarBean.dataAtual)}"/><br/>
 				<h:dataTable var="comentario" value="#{dia.comentarios}">
 					<h:column>
-						<h:commandLink value="@ " action="#{cadastroCalendarBean.setOpcAltComentario(cadastroCalendarBean.UPDATE, dia, comentario, magicCalendarBean.dataAtual)}"/>
-						<h:commandLink value="- " actionListener="#{cadastroCalendarBean.deletarComentario(dia, comentario)}"/>
+						<h:commandButton image="img/atualizar.png" action="#{cadastroCalendarBean.setOpcAltComentario(cadastroCalendarBean.UPDATE, dia, comentario, magicCalendarBean.dataAtual)}"/>
+						<h:commandButton image="img/delete.png" actionListener="#{cadastroCalendarBean.deletarComentario(dia, comentario)}"/>
 						#{comentario.text}
 					</h:column>
 				</h:dataTable>

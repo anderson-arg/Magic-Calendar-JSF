@@ -44,7 +44,9 @@
 		<h:message style="color:red" for="nome"/>
 		<br/>
 		<h:outputLabel value="Data: " for="data"/>
-		<h:inputText  id="data" value="#{cadastroCalendarBean.dataInicio}" converter="javax.faces.DateTime" pattern="dd/MM/yyyy" required="true"/>
+		<h:inputText  id="data" value="#{cadastroCalendarBean.dataInicio}" required="true">
+			<f:convertDateTime type="date" pattern="dd/MM/yyyy" locale="pt_BR" timeZone="America/Sao_Paulo" />
+		</h:inputText>
 		<h:message style="color:red" for="data"/>
 		<br/>
 		<h:commandButton value="Adicionar" action="#{cadastroCalendarBean.addFeriadoFixo}" />

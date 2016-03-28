@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
 
 import br.edu.ifpb.pweb.calendar.dao.ComentarioDAO;
 import br.edu.ifpb.pweb.calendar.dao.FeriadoDAO;
@@ -21,7 +20,6 @@ import br.edu.ifpb.pweb.calendar.model.Usuario;
 import br.edu.ifpb.pweb.calendar.util.Color;
 
 @ManagedBean
-@ViewScoped
 public class CadastroCalendarBean extends GenericBean{
 	private final int CREATE = 0;
 	private final int UPDATE = 1;
@@ -29,6 +27,8 @@ public class CadastroCalendarBean extends GenericBean{
 	private String texto;
 	private Date dataInicio;
 	private Date dataFim;
+	
+	private int selectIdFeriado;
 	private List<CalendarFixedHoliday> feriadosFixo;
 	
 	@ManagedProperty(value="#{pessoaBean}")
@@ -194,6 +194,14 @@ public class CadastroCalendarBean extends GenericBean{
 
 	public void setFeriadosFixo(List<CalendarFixedHoliday> feriadosFixo) {
 		this.feriadosFixo = feriadosFixo;
+	}
+
+	public int getSelectIdFeriado() {
+		return selectIdFeriado;
+	}
+
+	public void setSelectIdFeriado(int selectIdFeriado) {
+		this.selectIdFeriado = selectIdFeriado;
 	}
 	
 }

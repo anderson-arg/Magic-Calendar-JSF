@@ -41,12 +41,14 @@
 	<h:form id="form">
 		#{cadastroCalendarBean.carregarSelect()}
 		<h:outputLabel value="Data Fixo: "/>
-		<h:selectOneMenu value="#{pessoaBean.calendarSelecionado}" required="true">
-			<f:selectItems var="feriado" value="#{cadastroCalendarBean.feriadosFixo}" itemLabel="#{feriado.startDate} - #{feriado.text}" itemValue="#{feriado}"/>
+		<h:selectOneMenu value="#{cadastroCalendarBean.selectIdFeriado}" required="true">
+			<f:selectItems var="feriado" value="#{cadastroCalendarBean.feriadosFixo}" itemLabel="#{feriado.startDate} - #{feriado.text}" itemValue="#{feriado.id}"/>
 		</h:selectOneMenu>
 		<br/>
 		<h:outputLabel value="Data Substituto: " for="dataS"/>
-		<h:inputText  id="dataS" value="#{cadastroCalendarBean.dataInicio}" converter="javax.faces.DateTime" pattern="dd/MM/yyyy" required="true"/>
+		<h:inputText  id="dataS" value="#{cadastroCalendarBean.dataInicio}" required="true">
+			<f:convertDateTime type="date" pattern="dd/MM/yyyy" locale="pt_BR" timeZone="America/Sao_Paulo" />
+		</h:inputText>
 		<h:message style="color:red" for="dataS"/>
 		<br/>
 		<h:commandButton value="Substituir" action="#{cadastroCalendarBean.addFeriadoSubstituto}" />
