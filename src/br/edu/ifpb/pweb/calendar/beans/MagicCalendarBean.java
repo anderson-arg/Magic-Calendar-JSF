@@ -50,11 +50,9 @@ public class MagicCalendarBean {
 				for (CalendarFixedHoliday cf : tmpCf) {	
 					if(cf.getSubstituto() != null && cf.getSubstituto().getStartDate().getYear() == this.dataAtual.getYear()){
 						if(cf.getSubstituto().getStartDate().getDate() == data.getId() && cf.getSubstituto().getStartDate().getMonth() == this.dataAtual.getMonth()){						
-							cf.getSubstituto().setColor(Color.BLUE);
 							data.setFeriado(cf.getSubstituto());
 						}
 					}else if(cf.getStartDate().getDate() == data.getId() && cf.getStartDate().getMonth() == this.dataAtual.getMonth()){
-						cf.setColor(Color.RED);
 						data.setFeriado(cf);
 					}		
 				}

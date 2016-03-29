@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 
 import br.edu.ifpb.pweb.calendar.dao.ComentarioDAO;
 import br.edu.ifpb.pweb.calendar.dao.FeriadoDAO;
@@ -20,6 +21,7 @@ import br.edu.ifpb.pweb.calendar.model.Usuario;
 import br.edu.ifpb.pweb.calendar.util.Color;
 
 @ManagedBean
+@ViewScoped
 public class CadastroCalendarBean extends GenericBean{
 	private final int CREATE = 0;
 	private final int UPDATE = 1;
@@ -121,19 +123,32 @@ public class CadastroCalendarBean extends GenericBean{
 		return "index.xhtml";
 	}
 	
-	// esta travando aqui!!!
 	public String addFeriadoSubstituto(){
 		FeriadoFixoDAO ffDAO = new FeriadoFixoDAO(PersistenceUtil.getCurrentEntityManager());
-		this.pessoaBean.getCalendarSelecionado().setColor(Color.BLUE);
-		this.pessoaBean.getCalendarSelecionado().setStartDate(this.dataInicio);
-		((CalendarFixedHoliday)this.pessoaBean.getCalendarSelecionado()).setSubstituto((CalendarFixedHoliday)this.pessoaBean.getCalendarSelecionado());
+		CalendarFixedHoliday cf = new CalendarFixedHoliday();
+		cf.setColor(Color.BLUE);
+		cf.setText(this.getFeriadoFixo(this.selectIdFeriado).getText());
+		cf.setStartDate(this.dataInicio);
+		cf.setAdmin((Admin)this.pessoaBean.getLogado());
+		
+		((Admin)this.pessoaBean.getLogado()).getFeriadoFixo(this.selectIdFeriado).setSubstituto(cf);
+		
 		ffDAO.beginTransaction();
-		ffDAO.update((CalendarFixedHoliday)this.pessoaBean.getCalendarSelecionado());
+		ffDAO.insert(cf);
 		ffDAO.commit();
-		((Admin)this.pessoaBean.getLogado()).setFeriadoFixo((CalendarFixedHoliday)this.pessoaBean.getCalendarSelecionado());
+		((Admin)this.pessoaBean.getLogado()).addFeriadoFixo(cf);
 		
 		this.addInfoMessage("Feriado substituido com sucesso!");
 		return "index.xhtml";
+	}
+	
+	public CalendarFixedHoliday getFeriadoFixo(int id){
+		for(CalendarFixedHoliday fixo : this.feriadosFixo){
+			if(fixo.getId() == id){
+				return fixo;
+			}
+		}
+		return null;
 	}
 	
 	public void carregarSelect(){
