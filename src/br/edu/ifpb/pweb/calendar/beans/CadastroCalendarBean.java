@@ -1,5 +1,6 @@
 package br.edu.ifpb.pweb.calendar.beans;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -117,7 +118,7 @@ public class CadastroCalendarBean extends GenericBean{
 		ffDAO.beginTransaction();
 		ffDAO.insert(cf);
 		ffDAO.commit();
-		((Admin)this.pessoaBean.getLogado()).setFeriadoFixo(cf);
+		((Admin)this.pessoaBean.getLogado()).addFeriadoFixo(cf);
 		
 		this.addInfoMessage("Feriado adicionado com sucesso!");
 		return "index.xhtml";
@@ -131,6 +132,7 @@ public class CadastroCalendarBean extends GenericBean{
 		cf.setStartDate(this.dataInicio);
 		cf.setAdmin((Admin)this.pessoaBean.getLogado());
 		
+		cf.setSubstituto(((Admin)this.pessoaBean.getLogado()).getFeriadoFixo(this.selectIdFeriado));
 		((Admin)this.pessoaBean.getLogado()).getFeriadoFixo(this.selectIdFeriado).setSubstituto(cf);
 		
 		ffDAO.beginTransaction();
@@ -152,7 +154,13 @@ public class CadastroCalendarBean extends GenericBean{
 	}
 	
 	public void carregarSelect(){
-		this.feriadosFixo = ((Admin)this.pessoaBean.getLogado()).getListFixedHoliday();
+		List<CalendarFixedHoliday> auxCfs = new ArrayList<CalendarFixedHoliday>();
+		List<CalendarFixedHoliday> tmpCfs = ((Admin)this.pessoaBean.getLogado()).getListFixedHoliday();
+		for (CalendarFixedHoliday cf : tmpCfs) {
+			if(cf.getSubstituto() == null)
+				auxCfs.add(cf);
+		}
+		this.feriadosFixo = auxCfs;
 	}
 	
 	public Date addDateSelected(){

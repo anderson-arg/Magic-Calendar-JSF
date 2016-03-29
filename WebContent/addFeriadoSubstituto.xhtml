@@ -36,10 +36,9 @@
 		</h:form>
 		</div>
 	</div>
-
+	#{cadastroCalendarBean.carregarSelect()}
 	<h1>Adicionar Feriado Substituto</h1>
 	<h:form id="form">
-		#{cadastroCalendarBean.carregarSelect()}
 		<h:outputLabel value="Data Fixo: "/>
 		<h:selectOneMenu value="#{cadastroCalendarBean.selectIdFeriado}" required="true">
 			<f:selectItems var="feriado" value="#{cadastroCalendarBean.feriadosFixo}" itemLabel="#{feriado.startDate} - #{feriado.text}" itemValue="#{feriado.id}"/>

@@ -48,11 +48,11 @@ public class MagicCalendarBean {
 			List<CalendarFixedHoliday> tmpCf = new FeriadoFixoDAO(PersistenceUtil.getCurrentEntityManager()).findAll();
 			if(tmpCf.size() > 0){
 				for (CalendarFixedHoliday cf : tmpCf) {	
-					if(cf.getSubstituto() != null && cf.getSubstituto().getStartDate().getYear() == this.dataAtual.getYear()){
+					if(cf.getSubstituto() != null && cf.getSubstituto().getColor().equals(Color.BLUE) && cf.getSubstituto().getStartDate().getYear() == this.dataAtual.getYear()){
 						if(cf.getSubstituto().getStartDate().getDate() == data.getId() && cf.getSubstituto().getStartDate().getMonth() == this.dataAtual.getMonth()){						
 							data.setFeriado(cf.getSubstituto());
 						}
-					}else if(cf.getStartDate().getDate() == data.getId() && cf.getStartDate().getMonth() == this.dataAtual.getMonth()){
+					}else if(cf.getColor().equals(Color.RED) && cf.getStartDate().getDate() == data.getId() && cf.getStartDate().getMonth() == this.dataAtual.getMonth()){
 						data.setFeriado(cf);
 					}		
 				}
