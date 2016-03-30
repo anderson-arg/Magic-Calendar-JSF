@@ -17,6 +17,7 @@ public class Admin extends Pessoa {
 	public Admin(){
 		super();
 		this.listFixedHoliday = new ArrayList<CalendarFixedHoliday>();
+		this.listMobileHolidays = new ArrayList<CalendarMobileHoliday>();
 	}
 	
 	public void addFeriadoFixo(CalendarFixedHoliday holiday){
@@ -24,8 +25,17 @@ public class Admin extends Pessoa {
 		this.listFixedHoliday.add(holiday);
 	}
 	
+	public void addFeriadoMovel(CalendarMobileHoliday feriadoMovel){
+		feriadoMovel.setAdmin(this);
+		this.listMobileHolidays.add(feriadoMovel);
+	}
+	
 	public void delFeriadoFixo(CalendarFixedHoliday holiday){
 		this.listFixedHoliday.remove(holiday);
+	}
+	
+	public void delFeriadoMovel(CalendarMobileHoliday feriadoMovel){
+		this.listMobileHolidays.remove(feriadoMovel);
 	}
 	
 	public CalendarFixedHoliday getFeriadoFixo(int id){
@@ -42,6 +52,16 @@ public class Admin extends Pessoa {
 		for(CalendarFixedHoliday holiday : listFixedHoliday){
 			if(holiday.getId() == ch.getId()){
 				this.listFixedHoliday.set(index, ch);
+			}
+			index++;
+		}
+	}
+	
+	public void setFeriadoMovel(CalendarMobileHoliday cm){
+		int index = 0;
+		for(CalendarMobileHoliday calendarMobileHoliday : listMobileHolidays){
+			if(calendarMobileHoliday.getId() == cm.getId()){
+				this.listMobileHolidays.set(index, calendarMobileHoliday);
 			}
 			index++;
 		}

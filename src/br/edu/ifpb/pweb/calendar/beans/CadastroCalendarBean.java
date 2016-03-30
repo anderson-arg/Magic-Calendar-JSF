@@ -11,12 +11,14 @@ import javax.faces.bean.ViewScoped;
 import br.edu.ifpb.pweb.calendar.dao.ComentarioDAO;
 import br.edu.ifpb.pweb.calendar.dao.FeriadoDAO;
 import br.edu.ifpb.pweb.calendar.dao.FeriadoFixoDAO;
+import br.edu.ifpb.pweb.calendar.dao.FeriadoMovelDAO;
 import br.edu.ifpb.pweb.calendar.dao.PersistenceUtil;
 import br.edu.ifpb.pweb.calendar.dao.PessoaDAO;
 import br.edu.ifpb.pweb.calendar.model.Admin;
 import br.edu.ifpb.pweb.calendar.model.Calendar;
 import br.edu.ifpb.pweb.calendar.model.CalendarComment;
 import br.edu.ifpb.pweb.calendar.model.CalendarFixedHoliday;
+import br.edu.ifpb.pweb.calendar.model.CalendarMobileHoliday;
 import br.edu.ifpb.pweb.calendar.model.DiasCalendar;
 import br.edu.ifpb.pweb.calendar.model.Usuario;
 import br.edu.ifpb.pweb.calendar.util.Color;
@@ -93,12 +95,28 @@ public class CadastroCalendarBean extends GenericBean{
 	
 	public void deletarFeriado(Calendar feriado){
 		FeriadoDAO fDAO = new FeriadoDAO(PersistenceUtil.getCurrentEntityManager());
+		if(feriado instanceof CalendarFixedHoliday){
+			((Admin)this.pessoaBean.getLogado()).delFeriadoFixo((CalendarFixedHoliday)feriado);
+			if(((CalendarFixedHoliday) feriado).getSubstituto() != null){
+				((CalendarFixedHoliday)feriado).getSubstituto().setSubstituto(null);
+				((CalendarFixedHoliday)feriado).setSubstituto(null);
+				fDAO.beginTransaction();
+				fDAO.update(feriado);
+				fDAO.commit();
+			}
+		}
 		fDAO.beginTransaction();
 		fDAO.delete(feriado);
 		fDAO.commit();
 	}
 	
 	public String altFeriado(){
+		if(this.pessoaBean.getDiaSelecionado().getFeriado() instanceof CalendarFixedHoliday){
+			if(((CalendarFixedHoliday)this.pessoaBean.getDiaSelecionado().getFeriado()).getSubstituto() != null){
+				String texto = ((CalendarFixedHoliday)this.pessoaBean.getDiaSelecionado().getFeriado()).getText();
+				((CalendarFixedHoliday)this.pessoaBean.getDiaSelecionado().getFeriado()).getSubstituto().setText(texto);
+			}
+		}
 		FeriadoDAO pDAO = new FeriadoDAO(PersistenceUtil.getCurrentEntityManager());
 		pDAO.beginTransaction();
 		pDAO.update(this.pessoaBean.getDiaSelecionado().getFeriado());
@@ -138,7 +156,26 @@ public class CadastroCalendarBean extends GenericBean{
 		ffDAO.beginTransaction();
 		ffDAO.insert(cf);
 		ffDAO.commit();
-		((Admin)this.pessoaBean.getLogado()).addFeriadoFixo(cf);
+		//((Admin)this.pessoaBean.getLogado()).addFeriadoFixo(cf);
+		
+		this.addInfoMessage("Feriado substituido com sucesso!");
+		return "index.xhtml";
+	}
+	
+	public String addFeriadoMovel(){
+		FeriadoMovelDAO fmDAO = new FeriadoMovelDAO(PersistenceUtil.getCurrentEntityManager());
+		CalendarMobileHoliday cm = new CalendarMobileHoliday();
+		cm.setColor(Color.GREEN);
+		cm.setText(this.texto);
+		cm.setStartDate(this.dataInicio);
+		this.dataFim.setDate(this.dataFim.getDate()+1);
+		cm.setEndDate(this.dataFim);
+		cm.setAdmin((Admin)this.pessoaBean.getLogado());
+		
+		fmDAO.beginTransaction();
+		fmDAO.insert(cm);
+		fmDAO.commit();
+		((Admin)this.pessoaBean.getLogado()).addFeriadoMovel(cm);
 		
 		this.addInfoMessage("Feriado substituido com sucesso!");
 		return "index.xhtml";
@@ -156,9 +193,11 @@ public class CadastroCalendarBean extends GenericBean{
 	public void carregarSelect(){
 		List<CalendarFixedHoliday> auxCfs = new ArrayList<CalendarFixedHoliday>();
 		List<CalendarFixedHoliday> tmpCfs = ((Admin)this.pessoaBean.getLogado()).getListFixedHoliday();
-		for (CalendarFixedHoliday cf : tmpCfs) {
-			if(cf.getSubstituto() == null)
-				auxCfs.add(cf);
+		if(tmpCfs.size() > 0){
+			for (CalendarFixedHoliday cf : tmpCfs) {
+				if(cf.getSubstituto() == null)
+					auxCfs.add(cf);
+			}
 		}
 		this.feriadosFixo = auxCfs;
 	}

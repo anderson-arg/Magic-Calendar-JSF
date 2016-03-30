@@ -25,4 +25,12 @@ public class CalendarMobileHoliday extends Calendar {
 		this.admin = admin;
 	}
 
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
 }

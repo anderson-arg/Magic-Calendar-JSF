@@ -10,9 +10,11 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import br.edu.ifpb.pweb.calendar.dao.FeriadoFixoDAO;
+import br.edu.ifpb.pweb.calendar.dao.FeriadoMovelDAO;
 import br.edu.ifpb.pweb.calendar.dao.PersistenceUtil;
 import br.edu.ifpb.pweb.calendar.model.CalendarComment;
 import br.edu.ifpb.pweb.calendar.model.CalendarFixedHoliday;
+import br.edu.ifpb.pweb.calendar.model.CalendarMobileHoliday;
 import br.edu.ifpb.pweb.calendar.model.DiasCalendar;
 import br.edu.ifpb.pweb.calendar.model.Usuario;
 import br.edu.ifpb.pweb.calendar.util.Color;
@@ -32,7 +34,7 @@ public class MagicCalendarBean {
 	}
 	
 	public void gerarCalendar(){
-		this.addDataAtual(0);
+		this.incrementaDataAtual(0);
 		
 		for(int i=1; i<=quantidadeDiaMes(this.dataAtual); i++){
 			DiasCalendar data = new DiasCalendar();
@@ -44,7 +46,7 @@ public class MagicCalendarBean {
 				data.setColor(Color.PINK);
 			
 			
-			// gerando os feriados
+			// gerando os feriados fixo
 			List<CalendarFixedHoliday> tmpCf = new FeriadoFixoDAO(PersistenceUtil.getCurrentEntityManager()).findAll();
 			if(tmpCf.size() > 0){
 				for (CalendarFixedHoliday cf : tmpCf) {	
@@ -54,6 +56,19 @@ public class MagicCalendarBean {
 						}
 					}else if(cf.getColor().equals(Color.RED) && cf.getStartDate().getDate() == data.getId() && cf.getStartDate().getMonth() == this.dataAtual.getMonth()){
 						data.setFeriado(cf);
+					}		
+				}
+			}
+			
+			// gerando os feriados moveis
+			List<CalendarMobileHoliday> tmpCmob = new FeriadoMovelDAO(PersistenceUtil.getCurrentEntityManager()).findAll();
+			Date tmpD = new Date();
+			tmpD.setTime(this.dataAtual.getTime());
+			tmpD.setDate(data.getId());
+			if(tmpCmob.size() > 0){
+				for (CalendarMobileHoliday cm : tmpCmob) {	
+					if(tmpD.after(cm.getStartDate()) && tmpD.before(cm.getEndDate())){
+						data.setFeriado(cm);				
 					}		
 				}
 			}
@@ -82,7 +97,7 @@ public class MagicCalendarBean {
 		return c.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 	
-	public void addDataAtual(int i){
+	public void incrementaDataAtual(int i){
 		Calendar c = Calendar.getInstance();
 		this.dataAtual.setMonth(dataAtual.getMonth()+i);
 		c.setTime(this.dataAtual);

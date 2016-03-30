@@ -15,34 +15,107 @@
 
 <title>Página Inicial</title>
 
+
+<style>
+.dropbtn {
+    color: blue;
+    padding: 8px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    	color: blue;
+    
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: inline;
+}
+
+</style>
 </head>
 <body>
 
-	<div id="topo">
+		<div id="topo">
 		<div id="msg"><h:messages style="list-style-type: none" globalOnly="true" /></div>
-		<div id="menu">
+		<div id="menu">			
 		<h:form>
 			<ul>
-				<li><h:outputText rendered="#{not empty pessoaBean.logado}" value="Bem Vindo, #{pessoaBean.logado.name}"/></li>
-				<h:outputLink value="index.xhtml"><li>Home</li></h:outputLink>
-				<h:outputLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="ativaUsuario.xhtml"><li id="acceptUser">Accept User</li></h:outputLink>
-				<h:outputLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="index.xhtml"><li id="registerHoliday">Register Holiday</li></h:outputLink>
-				<h:outputLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="altSenha.xhtml"><li id="passwordChange">Password Change</li></h:outputLink>
-				<h:commandLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.USUARIO}" action="#{pessoaBean.deleteConta}"><li id="accountDelete">AccountDelete</li></h:commandLink>
-				<h:commandLink rendered="#{not empty pessoaBean.logado}" action="#{pessoaBean.desLogar}"><li>Logout</li></h:commandLink>
-				<h:outputLink rendered="#{empty pessoaBean.logado}" value="cadastroPessoa.xhtml" ><li>New Account</li></h:outputLink>
-				<h:outputLink rendered="#{empty pessoaBean.logado}" value="login.xhtml" ><li>Login</li></h:outputLink>
+				<li class="dropbtn" style="color:#000;cursor:default;">
+				<h:outputText rendered="#{not empty pessoaBean.logado}" value="Bem Vindo, #{pessoaBean.logado.name}"/>
+				</li>
+				
+				<h:outputLink value="index.xhtml">
+				<li class="dropbtn">Inicio</li>				
+				</h:outputLink>
+				
+				<h:outputLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="ativaUsuario.xhtml">
+				<li class="dropbtn" id="acceptUser" >Aceitar usuario</li>
+				</h:outputLink>
+				
+				<div class="dropdown">	
+				<h:panelGroup rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}">
+				<li class="dropbtn" id="registerHoliday">Adicionar Feriado
+				<div class="dropdown-content">
+					<h:outputLink value="addFeriadoFixo.xhtml">Feriado Fixo</h:outputLink>
+					<h:outputLink value="addFeriadoSubstituto.xhtml">Feriado Substituto</h:outputLink>
+					<h:outputLink value="addFeriadoMovel.xhtml">Feriado Móvel</h:outputLink>
+  				</div>		
+				</li>
+				</h:panelGroup>
+				</div>
+				
+				<h:outputLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.ADMIN}" value="altSenha.xhtml">
+				<li class="dropbtn" id="passwordChange">Alterar senha</li>
+				</h:outputLink>
+				
+				<h:commandLink rendered="#{not empty pessoaBean.logado and pessoaBean.tipoUsuario == pessoaBean.USUARIO}" action="#{pessoaBean.deleteConta}">
+				<li class="dropbtn" id="accountDelete">Deletar conta</li>
+				</h:commandLink>
+				
+				<h:commandLink rendered="#{not empty pessoaBean.logado}" action="#{pessoaBean.desLogar}">
+				<li class="dropbtn" >Sair</li>
+				</h:commandLink>
+				
+				<h:outputLink rendered="#{empty pessoaBean.logado}" value="cadastroPessoa.xhtml" >
+				<li class="dropbtn">Nova conta</li>
+				</h:outputLink>
+				
+				<h:outputLink rendered="#{empty pessoaBean.logado}" value="login.xhtml" >
+				<li class="dropbtn">Entrar</li>
+				</h:outputLink>
+				
 			</ul>
 		</h:form>
 		</div>
-	</div>
-
+		</div>					
+		
 	#{magicCalendarBean.gerarCalendar()}
 	<h:form>
 		<div id="dataAtual">
-			<h:commandLink value="Prev" actionListener="#{magicCalendarBean.addDataAtual(-1)}"/>
+			<h:commandLink value="Prev" actionListener="#{magicCalendarBean.incrementaDataAtual(-1)}"/>
 			<b><h:outputText value="#{magicCalendarBean.dataAtualConcatenada}"/></b>
-			<h:commandLink value="Next" actionListener="#{magicCalendarBean.addDataAtual(1)}"/>
+			<h:commandLink value="Next" actionListener="#{magicCalendarBean.incrementaDataAtual(1)}"/>
 		</div>
 		<h:dataTable var="dia" value="#{magicCalendarBean.diasCalendar}" styleClass="table table-striped">
 			<h:column>
@@ -81,15 +154,15 @@
 		<table>
 			<tr>
 				<td><div id="red"></div></td>
-				<td><b>Fixed</b></td>
+				<td><b>Fixo</b></td>
 			</tr>
 			<tr>
 				<td><div id="green"></div></td>
-				<td><b>Movement</b></td>
+				<td><b>Móvel</b></td>
 			</tr>
 			<tr>
 				<td><div id="blue"></div></td>
-				<td><b>Substitute</b></td>
+				<td><b>Substituto</b></td>
 			</tr>
 		</table>
 	</div>

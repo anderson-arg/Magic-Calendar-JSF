@@ -19,6 +19,43 @@
 
 <title>Página UPDATE Comentario</title>
 
+<style>
+.dropbtn {
+    color: blue;
+    padding: 8px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    	color: blue;
+    
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: inline;
+}
+
+</style>
 </head>
 <body>
 	<div id="topo">
@@ -26,24 +63,34 @@
 		<div id="menu">
 		<h:form>
 			<ul>
-				<li><h:outputText value="Bem Vindo, #{pessoaBean.logado.name}"/></li>
-				<h:outputLink value="index.xhtml"><li>Home</li></h:outputLink>
-				<h:commandLink action="#{pessoaBean.deleteConta}"><li id="accountDelete">AccountDelete</li></h:commandLink>
-				<h:commandLink action="#{pessoaBean.desLogar}"><li>Logout</li></h:commandLink>
+				<li  class="dropbtn" style="color:#000;cursor:default;"><h:outputText value="Bem Vindo, #{pessoaBean.logado.name}"/></li>
+				<h:outputLink value="index.xhtml"><li  class="dropbtn" >Início</li></h:outputLink>
+				<h:commandLink action="#{pessoaBean.deleteConta}"><li  class="dropbtn" id="accountDelete">Deletar Conta</li></h:commandLink>
+				<h:commandLink action="#{pessoaBean.desLogar}"><li class="dropbtn">Sair</li></h:commandLink>
 			</ul>
 		</h:form>
 		</div>
 	</div>
 
-	<h1>Alterar Comentario</h1>
+		<div class="container">
+	   	<div class="row">
+        <div class="col-sm-6 col-md-4 col-md-offset-4">
+        <h1 class="text-center login-title">Alterar Comentário</h1>
+        <div class="account-wall">
+        
 	<h:form id="form">
 		<h:outputLabel value="Comentario: " for="comentario"/>
-		<h:inputText  id="comentario" value="#{pessoaBean.calendarSelecionado.text}" required="true"/>
+		<h:inputText  id="comentario" value="#{pessoaBean.calendarSelecionado.text}" required="true" class="form-control"/>
 		<h:message style="color:red" for="comentario"/>
 		<br/>
-		<h:commandButton value="Atualizar" action="#{cadastroCalendarBean.altComentario}" />
-		<h:outputLink value="index.xhtml">Voltar</h:outputLink>
+		<h:commandButton value="Atualizar" action="#{cadastroCalendarBean.altComentario}" class="btn btn-lg btn-primary btn-block"  />
+		<h:outputLink value="index.xhtml" class="btn btn-lg btn-primary btn-block" >Voltar</h:outputLink>
 	</h:form>
 	
+		</div>
+    	</div>
+		</div>
+		</div>
+		
 </body>
 </html>
