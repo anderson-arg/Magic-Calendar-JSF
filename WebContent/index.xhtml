@@ -119,9 +119,12 @@
 		</div>
 		<h:dataTable var="dia" value="#{magicCalendarBean.diasCalendar}" styleClass="table table-striped">
 			<h:column>
-			<f:facet name="header">Dia</f:facet>
-				<h:outputText style="color:#{dia.color};" value="#{dia.id}"/><br/>
+			<f:facet name="header">Dia da Semana</f:facet>
 				<h:outputText value="#{magicCalendarBean.diaSemana(dia.id)}" />
+			</h:column>
+			<h:column>
+			<f:facet name="header">Dia</f:facet>
+				<h:outputText style="color:#{dia.color};" value="#{dia.id}"/>
 			</h:column>
 			<h:column>
 				<f:facet name="header">Feriado</f:facet>
