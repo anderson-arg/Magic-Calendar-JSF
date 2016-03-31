@@ -19,7 +19,7 @@ import br.edu.ifpb.pweb.calendar.model.Usuario;
 @ManagedBean
 @ViewScoped
 public class CadastrarPessoaBean extends GenericBean {
-	private final String ADMIN = "admin";
+	private final String ADMIN = "adminMagic";
 	
 	private String nome;
 	private String senha;
