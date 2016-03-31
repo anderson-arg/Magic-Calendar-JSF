@@ -113,9 +113,9 @@
 	#{magicCalendarBean.gerarCalendar()}
 	<h:form>
 		<div id="dataAtual">
-			<h:commandLink value="Prev" actionListener="#{magicCalendarBean.incrementaDataAtual(-1)}"/>
+			<h:commandLink value="Anterior" actionListener="#{magicCalendarBean.incrementaDataAtual(-1)}"/>
 			<b><h:outputText value="#{magicCalendarBean.dataAtualConcatenada}"/></b>
-			<h:commandLink value="Next" actionListener="#{magicCalendarBean.incrementaDataAtual(1)}"/>
+			<h:commandLink value="Próximo" actionListener="#{magicCalendarBean.incrementaDataAtual(1)}"/>
 		</div>
 		<h:dataTable var="dia" value="#{magicCalendarBean.diasCalendar}" styleClass="table table-striped">
 			<h:column>
