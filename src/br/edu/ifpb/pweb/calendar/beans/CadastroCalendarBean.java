@@ -175,7 +175,7 @@ public class CadastroCalendarBean extends GenericBean{
 		fmDAO.beginTransaction();
 		fmDAO.insert(cm);
 		fmDAO.commit();
-		//((Admin)this.pessoaBean.getLogado()).addFeriadoMovel(cm);
+		((Admin)this.pessoaBean.getLogado()).addFeriadoMovel(cm);
 		
 		this.addInfoMessage("Feriado substituido com sucesso!");
 		return "index.xhtml";
