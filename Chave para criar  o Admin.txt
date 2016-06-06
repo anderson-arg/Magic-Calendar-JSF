@@ -4,4 +4,4 @@
    
  OBS: A senha pode ser qualquer uma.
 
- CHAVE: | adminMagic |
+ CHAVE: | adminMagic 
